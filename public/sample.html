@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic State Table</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .legend {
+            margin-top: 20px;
+        }
+        .legend h3 {
+            margin-bottom: 10px;
+        }
+        .legend ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .legend li {
+            display: inline-block;
+            margin-right: 20px;
+        }
+        .legend .color-box {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-right: 5px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        
+    
+        <h1>Car Navigation State Table</h1>
+        <div class="legend mt-4">
+            <h3>Legend</h3>
+            <ul>
+                <li><div class="color-box" style="background-color: green"></div> Current State</li>
+                <li><div class="color-box" style="background-color: #df6f3f;"></div> Sensor Input</li>
+                <li><div class="color-box" style="background-color: #4fb813;"></div> Next State</li>
+                <li><div class="color-box" style="background-color: grey;"></div> Action</li>
+            </ul>
+        </div>
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Current State</th>
+                    <th>Sensor Input</th>
+                    <th>Next State</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="state-table-body">
+                <tr>
+                    <td>Move forward</td>
+                    <td>Path ahead</td>
+                    <td>Move forward</td>
+                    <td>Move forward</td>
+                </tr>
+                <tr>
+                    <td>Move forward</td>
+                    <td>Wall ahead</td>
+                    <td>Determine direction</td>
+                    <td>Check right, left, back</td>
+                </tr>
+                <tr>
+                    <td>Determine direction</td>
+                    <td>Path right</td>
+                    <td>Turn right</td>
+                    <td>Turn right and move</td>
+                </tr>
+                <tr>
+                    <td>Determine direction</td>
+                    <td>Path left</td>
+                    <td>Turn left</td>
+                    <td>Turn left and move</td>
+                </tr>
+                <tr>
+                    <td>Determine direction</td>
+                    <td>Dead end</td>
+                    <td>Turn 180 degrees</td>
+                    <td>Turn 180 and move</td>
+                </tr>
+                <tr>
+                    <td>Turn right</td>
+                    <td>N/A</td>
+                    <td>Move forward</td>
+                    <td>Move forward</td>
+                </tr>
+                <tr>
+                    <td>Turn left</td>
+                    <td>N/A</td>
+                    <td>Move forward</td>
+                    <td>Move forward</td>
+                </tr>
+                <tr>
+                    <td>Turn 180 degrees</td>
+                    <td>N/A</td>
+                    <td>Move forward</td>
+                    <td>Move forward</td>
+                </tr>
+                <tr>
+                    <td>Move forward</td>
+                    <td>Exit reached</td>
+                    <td>Stop</td>
+                    <td>Stop</td>
+                </tr>
+            </tbody>
+        </table>
+    
+    
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#add-state-form').on('submit', function(event) {
+                event.preventDefault();
+    
+                const currentState = $('#currentState').val();
+                const sensorInput = $('#sensorInput').val();
+                const nextState = $('#nextState').val();
+                const action = $('#action').val();
+    
+                const newRow = `
+                    <tr>
+                        <td>${currentState}</td>
+                        <td>${sensorInput}</td>
+                        <td>${nextState}</td>
+                        <td>${action}</td>
+                        <td><button class="btn btn-danger btn-sm delete-row">Delete</button></td>
+                    </tr>
+                `;
+    
+                $('#state-table-body').append(newRow);
+    
+                // Clear form inputs
+                $('#currentState').val('');
+                $('#sensorInput').val('');
+                $('#nextState').val('');
+                $('#action').val('');
+            });
+    
+            // Event delegation to handle dynamically added delete buttons
+            $(document).on('click', '.delete-row', function() {
+                $(this).closest('tr').remove();
+            });
+        });
+    </script>
+</body>
+</html>
